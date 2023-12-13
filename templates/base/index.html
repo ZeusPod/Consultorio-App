@@ -1,0 +1,102 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card bg-gradient-success" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title text-center text-white">Citas programadas</h5>
+                  <div class="conteo text-center text-white">
+                      <h1>{{ estudiantes_count }}</h1>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card bg-gradient-danger" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title text-center text-white">Citas canceladas</h5>
+                  <div class="conteo text-center text-white">
+                    <h1>{{ deserciones_count }}</h1>
+                </div>
+                </div>
+              </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body bg-gradient-info">
+                  <h5 class="card-title text-center text-white">Citas efectivas</h5>
+                  <div class="conteo text-center text-white">
+                    <h1>{{ ciudades_count }}</h1>
+                  </div>
+                </div>
+              </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Dropdown Card Example -->
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-success">Citas progamadas para hoy</h6>
+        
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+       
+            No hay categorias disponibles
+        
+         <table class="table table-striped  table-hover">
+            <thead>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Identificacion</th>
+                <th>Ver Notas</th>
+                
+            </thead>
+
+            <tbody>
+                {% for item in estudiante %}
+                    <tr>
+                        <td>{{ item.id}}</td>
+                        <td>{{ item.nombre}}</td>
+                        <td>{{ item.identificacion}}</td>
+                        
+                        <td>
+                            <a href="#" class="btn btn-success btn-circle" role="button"><i class="far fa-eye"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+         </table>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block js_page %}
+<script>
+    //call datatables jquery plugin
+    $(document).ready(function () {
+        $('.table').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            responsive: true,
+            searching: true,
+        });
+    })
+</script>
+
+{% endblock js_page %}

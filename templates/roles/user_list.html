@@ -1,0 +1,163 @@
+{% extends 'base/base.html' %}
+
+{% block template_name %}
+<div class="text-center w-100">
+    <h2>Gestión de usuarios activos</h2>
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5">
+
+  <table class="table table-striped mt-5">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Status</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+      {% for user in users %}
+        
+        {% if user.is_active %}
+          <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.get_role_display }}</td>
+            {% if user.is_active %}
+            <td>Activo</td>
+    
+            {% else %}
+            <th>Inactivo</th>
+            {% endif %}
+            <td>
+              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editarUsuario{{ user.id }}">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <!-- Modal editar usuarios-->
+              <!-- Modal para editar usuario -->
+              <div class="modal fade" id="editarUsuario{{ user.id }}" tabindex="-1" role="dialog"
+                aria-labelledby="editarUsuario{{ user.id }}Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="editarUsuario{{ user.id }}Label">Editar usuario</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="post" action="#">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label for="nombre">Nombre:</label>
+                          <input type="text" class="form-control" id="nombre" name="nombre" value="{{ user.first_name }}">
+                        </div>
+                        <div class="form-group">
+                          <label for="apellido">Apellido:</label>
+                          <input type="text" class="form-control" id="apellido" name="apellido"
+                            value="{{ user.last_name }}">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Email:</label>
+                          <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                        </div>
+                        <div class="form-group">
+                          <label for="rol">Rol:</label>
+                          <select class="form-control" id="rol" name="rol">
+                            <option value="0">ADMINISTRADOR</option>
+                            <option value="1">SUPERVISOR</option>
+                            <option value="2">MEDICO</option>
+                            <option value="3">ASISTENTE</option>
+                          </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+    
+    
+    
+              <!-- boton eliminar confirmarcion modal -->
+              <!-- <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#eliminarUsuario{{ user.id }}">
+                <i class="fa-solid fa-trash"></i>
+              </button> -->
+              <!-- Modal -->
+              <div class="modal fade" id="eliminarUsuario{{ user.id }}" tabindex="-1" role="dialog"
+                aria-labelledby="eliminarUsuario{{ user.id }}Label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="eliminarUsuario{{ user.id }}Label">Confirmar Eliminación</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      ¿Está seguro que desea eliminar al usuario {{ user.first_name }} {{ user.last_name }}?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <a href="#" class="btn btn-danger">Eliminar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- desacrivar usuario -->
+              <a href="#" class="btn btn-secondary"><i class="fa-solid fa-ban"></i></a>
+            </td>
+    
+            <!-- Modal -->
+    
+    
+    
+    
+          </tr>
+        {% endif %}
+      {% endfor %}
+      
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block js_page %}
+<script>
+    // datatable
+    $(document).ready(function () {
+        $('.table').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            responsive: true,
+            searching: true,
+        });
+    })
+</script>
+
+{% endblock js_page %}
