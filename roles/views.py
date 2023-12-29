@@ -10,6 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Create your views here.
+@login_required(login_url='roles:login')
 def index(request):
     return render(request, 'base/index.html')
 

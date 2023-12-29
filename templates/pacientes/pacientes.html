@@ -1,0 +1,45 @@
+{% extends 'base/base.html' %}
+
+{% block template_name %}
+<div class="text-center w-100">
+    <h2>Gestión de Pacientes</h2>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container my-auto">
+    <!-- listado de pacientes  -->
+    <table class="table table-striped  table-hover">
+        <thead>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Identificacion</th>
+            <th>Direccion</th>
+            <th>Ver paciente</th>
+        </thead>
+
+        <tbody>
+            {% for paciente in pacientes %}
+                <tr>
+                    <td>{{ paciente.id }}</td>
+                    <td>{{ paciente.large_name }}</td>
+                    <td>{{ paciente.identification }}</td>
+                    <td>{{ paciente.address }}</td>
+                    <td class="text-start">
+                        <a href="#" class="btn btn-success btn-circle" role="button"><i class="far fa-eye"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+     </table>
+
+
+</div>
+
+
+
+{% endblock %}

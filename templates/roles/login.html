@@ -1,0 +1,129 @@
+{% extends "base/base.html" %}
+
+<!-- incluimos la vista de messages.html -->
+{% include "base/messages.html" %}
+
+
+{% block side_bar %} {% endblock %}
+{% block top_bar %} {% endblock %}
+{% block content %} {% endblock %}
+{% block footer %} {% endblock %}
+
+{% block login %}
+
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="d-flex justify-content-center min-vh-100 align-items-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 bg-primary d-flex justify-content-center align-items-center px-5">
+                            <img src="/static/base/img/logo-gavidia.png" alt="logo" class="my-5 mx-auto img-fluid" width="250px">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="px-2 py-4 p-lg-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4"><b>Centro Profesional Gavidia
+                                    </b><br>Iniciar Sesión</h1>
+                                    <small class="text-danger">
+                                        {% if form.errors %}
+                                            {% for field in form %}
+                                                {% if field.errors %}
+                                                {% for error in field.errors %}
+                                                   {{ error|escape }}
+                                                {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+
+
+                                        {% if form.non_field_errors %}
+                                            {% for error in form.non_field_errors %}
+                                            {{ error|escape }}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% endif %}
+                                    </small>
+                                </div>
+                                <form class="user" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user"
+                                            name="username"
+                                            id="id_username" aria-describedby="emailHelp"
+                                            placeholder="Correo">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                name="password"
+                                                id="id_password" placeholder="Contraseña">
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-outline-primary" id="togglePassword">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>                             
+                                    
+                                     
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Acceder
+                                    </button>
+                                </form>
+                                <div class="text-center mt-4">
+                                    <a class="small" href="#">¿Olvidaste tu contraseña?</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- form group -->
+        
+
+        {% if request.COOKIES.flag_success %}
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Actualización Exitosa',
+                    text: 'Su contraseña ha sido actualizada correctamente!',
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            </script>
+        {% endif %}
+  
+    </div>
+
+</div>
+
+{% endblock login %}
+
+{% block js_page %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            var passwordInput = document.getElementById("id_password");
+            var icon = this.querySelector("i");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+    }, false);
+</script>
+
+{% endblock %}
