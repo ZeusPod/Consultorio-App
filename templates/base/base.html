@@ -56,7 +56,7 @@
              <!-- dropdown menu usuarios -->
              <li class="nav-item">
                 <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fa-solid fa-user-doctor"></i>
                     <span>Usuarios</span>
                 </a>
                 
@@ -64,8 +64,7 @@
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded bg-white">
                         <a class="collapse-item" href="{% url 'roles:register' %}">Crear usuario</a>
-                        <a class="collapse-item" href="#">Editar usuario</a>
-                        <a class="collapse-item" href="#">Eliminar usuario</a>
+                        <a class="collapse-item" href="{% url 'roles:user_list' %}">Listado de usuarios</a>
                     </div>
                 </div>
              </li>
@@ -73,7 +72,7 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fa-solid fa-users-line"></i>
                     <span>Pacientes</span>
                 </a>
                 
@@ -88,17 +87,17 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fa-regular fa-calendar-check"></i>
                     <span>Citas</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fa-solid fa-address-book"></i>
                     <span>Contactos</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>Historial de citas</span></a>
             </li>
 
@@ -130,7 +129,10 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    
+                     <!-- Topbar Navbar -->
+                {% block template_name %}
+
+                {% endblock %}
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -164,8 +166,8 @@
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        <li class="nav-item dropdown no-arrow ml-3">
+                            <a class="ml-3 nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.username }}</span>
                                 <i class="fa-solid fa-user"></i>
@@ -193,6 +195,8 @@
                     </ul>
 
                 </nav>
+
+               
                 {% endblock top_bar %}
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
@@ -223,6 +227,7 @@
         <!-- End of Content Wrapper -->
 
     </div>
+    {% include 'base/messages.html'   %}
     {% endblock footer %}
     <!-- End of Page Wrapper -->
     {% block login %} {% endblock login %}

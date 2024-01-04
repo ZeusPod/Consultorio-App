@@ -19,3 +19,19 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         exclude = ['username']
         fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'role')
+        labels = {
+            'email': 'Correo electrónico',
+            'first_name': 'Nombres',
+            'last_name': 'Apellidos',
+            'password1': 'Contraseña',
+            'password2': 'Confirmar contraseña',
+            'role': 'Rol',
+
+        }
+        widgets = {
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),   
+        }

@@ -18,7 +18,7 @@
             <th>Nombre</th>
             <th>Identificacion</th>
             <th>Direccion</th>
-            <th>Ver paciente</th>
+            <th>Acciones</th>
         </thead>
 
         <tbody>
@@ -29,17 +29,121 @@
                     <td>{{ paciente.identification }}</td>
                     <td>{{ paciente.address }}</td>
                     <td class="text-start">
-                        <a href="#" class="btn btn-success btn-circle" role="button"><i class="far fa-eye"></i></a>
+                        <!-- modal ver detalle de paciente -->
+                        <button type="button" class="btn btn-success btn-circle" data-bs-toggle="modal" data-bs-target="#verPacienteModal{{ paciente.id }}">
+                            <i class="far fa-eye"></i>
+                        </button>
+                        <!-- modal para editar paciente -->
+                        <button type="button" class="btn btn-primary btn-circle" data-bs-toggle="modal" data-bs-target="#editPacienteModal{{ paciente.id }}">
+                            <i class="far fa-edit"></i>
+                        </button>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
 
-     </table>
+    </table>
 
 
 </div>
 
+
+<!-- modal ver paciente -->
+{% for paciente in pacientes %}
+<div class="modal fade" id="verPacienteModal{{paciente.id}}" tabindex="-1" aria-labelledby="verPacienteModalModalLabel{{paciente.id}}" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 mx-auto" id="verPacienteModalLabel{{paciente.id}}">{{paciente.large_name}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row text-center">
+                <div class="col col-xl-6">
+                    <label for="Sexo"><b>Sexo: </b></label>
+                    <p>{{paciente.gender}}</p>      
+                </div>
+                <div class="col col-xl-6">
+                    <label for="Identificacion"><b>Identificacion: </b></label>
+                    <p>{{paciente.identification}}</p>      
+                </div>
+          </div>
+          <hr>
+          <div class="row text-center">
+                <div class="col col-xl-6">
+                    <label for="telefono"><b>Telefono: </b></label>
+                    <p>{{paciente.phone}}</p>      
+                </div>
+                <div class="col col-xl-6">
+                    <label for="email"><b>Email: </b></label>
+                    <p>{{paciente.email}}</p>      
+                </div>
+          </div>
+          <hr>
+          <div class="row text-center">
+                <div class="col col-xl-12">
+                    <label for="Direccion"><b>Direccion: </b></label>
+                    <p>{{paciente.address}}</p>      
+                </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+<!-- modal editar paciente -->
+{% for paciente in pacientes %}
+<div class="modal fade" id="editPacienteModal{{ paciente.id }}" tabindex="-1" aria-labelledby="editPacienteModal{{ paciente.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editPacienteModal{{ paciente.id }}">Editar Paciente</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col">
+                        <label for="name">Nombre: </label>
+                        <input type="text" class="form-control" id="name" value="{{paciente.large_name}}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}
+{% block js_page %}
+<script>
+    // datatable
+    $(document).ready(function () {
+        $('.table').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            responsive: true,
+            searching: true,
+        });
+    })
+</script>
 
 
 {% endblock %}

@@ -2,6 +2,14 @@
 
 {%load crispy_forms_tags %} 
 
+
+{% block template_name %}
+<div class="text-center w-100">
+    <h2>Registro de Pacientes</h2>
+</div>
+{% endblock %}
+
+
 {% block content %}
 
 
@@ -10,11 +18,10 @@
             <div class="col-12 col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
-                        <h2>Registro de paciente</h2>
-                        <form action="{% url 'pacientes:create_paciente' %}" method="post">
+                        <form class="form " action="{% url 'pacientes:create_paciente' %}" method="post">
                             {% csrf_token %}
                             {{ form|crispy }}
-                            <input type="submit" value="registrar" class="btn btn-success float-right">
+                            <input type="submit" value="Registrar" class="btn btn-success float-right mt-4">
                         </form>
                     </div>
                 </div>
