@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-
+{%load crispy_forms_tags %} 
 {% block template_name %}
 <div class="text-center w-100">
     <h2>Gestión de Pacientes</h2>
@@ -10,14 +10,21 @@
 {% block content %}
 
 
+
 <div class="container my-auto">
+    
+    <!-- boton agregar paciente -->
+    <button type="button" class="btn text-light mb-3" style="background-color: #4D72DE;" data-bs-toggle="modal" data-bs-target="#addPacienteModal">
+        Agregar nuevo paciente
+    </button>
+    
     <!-- listado de pacientes  -->
     <table class="table table-striped  table-hover">
         <thead>
             <th>Id</th>
             <th>Nombre</th>
-            <th>Identificacion</th>
-            <th>Direccion</th>
+            <th>Cédula</th>
+            <th>Dirección</th>
             <th>Acciones</th>
         </thead>
 
@@ -48,13 +55,36 @@
 </div>
 
 
-<!-- modal ver paciente -->
-{% for paciente in pacientes %}
-<div class="modal fade" id="verPacienteModal{{paciente.id}}" tabindex="-1" aria-labelledby="verPacienteModalModalLabel{{paciente.id}}" aria-hidden="true">
+<!-- modal agregar paciente -->
+<div class="modal fade" id="addPacienteModal" tabindex="-1" aria-labelledby="addPacienteModal" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 mx-auto" id="verPacienteModalLabel{{paciente.id}}">{{paciente.large_name}}</h1>
+          <h1 class="modal-title fs-5" id="addPacienteModal">Registrar paciente</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'pacientes:create_paciente' %}" method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Registrar paciente</button>
+        </div>
+      </form>
+      </div>
+    </div>
+</div>
+
+
+<!-- modal ver paciente -->
+{% for paciente in pacientes %}
+<div class="modal fade" id="verPacienteModal{{paciente.id}}" tabindex="-1" aria-labelledby="verPacienteModalModalLabel{{paciente.id}}" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="verPacienteModalLabel{{paciente.id}}">{{paciente.large_name}}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -107,18 +137,48 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="">
-                    <div class="row">
+                <form action="{% url 'pacientes:update_paciente' pk=paciente.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="row mt-4">
                         <div class="col">
                         <label for="name">Nombre: </label>
-                        <input type="text" class="form-control" id="name" value="{{paciente.large_name}}">
+                        <input type="text" class="form-control" id="name" name="name" value="{{paciente.large_name}}">
+                        </div>
+                        <div class="col">
+                        <label for="identification">Cédula de Identidad: </label>
+                        <input type="text" class="form-control" id="identification" name="identification" value="{{paciente.identification}}">
                         </div>
                     </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                        <label for="geneder">Sexo: </label>
+                        <select name="gender" id="gender" class="form-select">
+                            <option value="masculino" {% if paciente.gender == 'masculino' %}selected{% endif %}>masculino</option>
+                                <option value="femenino" {% if paciente.gender == 'femenino' %}selected{% endif %}>femenino</option>
+                        </select>
+                        </div>
+                        <div class="col">
+                        <label for="email">Email: </label>
+                        <input type="text" class="form-control" id="email" name="email" value="{{paciente.email}}">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                        <label for="phone">Telefono: </label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="{{paciente.phone}}">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                        <label for="address">Dirección: </label>
+                        <input type="text" class="form-control" id="address" name="address" value="{{paciente.address}}">
+                        </div>
+                    </div>
+                    <div class="modal-footer mt-4">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -126,6 +186,7 @@
 {% endfor %}
 
 
+<!-- modal eliminar paciente -->
 {% endblock %}
 {% block js_page %}
 <script>

@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     #### user defined apps  ####
     'roles',
     'pacientes',
+    'citas',
+    'historias',
     ### third party apps ###
     'crispy_forms',
 ]

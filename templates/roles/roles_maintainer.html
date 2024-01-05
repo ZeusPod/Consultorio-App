@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+
+{% block template_name %}
+<div class="text-center w-100">
+    <h2>Gestión de Roles</h2>
+</div>
+{% endblock %}
+
+<!-- listado de roles -->
+
+{% block content %}
+<div class="container my-auto">
+    <!-- boton agregar rol -->
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addRolModal">
+        Agregar nuevo rol
+    </button>
+    <table class="table table-striped  table-hover">
+        <thead>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </thead>
+
+        <tbody>
+            {% for role in roles %}
+                <tr>
+                    <td>{{ role.id }}</td>
+                    <td>{{ role.name }}</td>
+                    <td class="text-start">
+                        <!-- modal para editar rol -->
+                        <button type="button" class="btn btn-primary btn-circle" data-bs-toggle="modal" data-bs-target="#editRolModal{{ role.id }}">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+
+<!-- modal agregar rol -->
+<div class="modal fade" id="addRolModal" tabindex="-1" aria-labelledby="addRolModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addRolModal">Agrega un nuevo rol</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'roles:roles_create' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="rolName" class="form-label">Nombre del rol</label>
+                    <input type="text" class="form-control" id="rolName" name="rolName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </div>
+           </form>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+
+{% block js_page %}
+
+<script>
+    // datatable
+    $(document).ready(function () {
+        $('.table').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            responsive: true,
+            searching: false,
+        });
+    })
+</script>
+
+{% endblock %}

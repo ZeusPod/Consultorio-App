@@ -31,7 +31,7 @@
             <td>{{ user.first_name }}</td>
             <td>{{ user.last_name }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.get_role_display }}</td>
+            <td>{{ user.role.name }}</td>
             {% if user.is_active %}
             <td>Activo</td>
     
@@ -39,103 +39,89 @@
             <th>Inactivo</th>
             {% endif %}
             <td>
-              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editarUsuario{{ user.id }}">
+              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarUsuario{{ user.id }}">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
-              <!-- Modal editar usuarios-->
-              <!-- Modal para editar usuario -->
-              <div class="modal fade" id="editarUsuario{{ user.id }}" tabindex="-1" role="dialog"
-                aria-labelledby="editarUsuario{{ user.id }}Label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="editarUsuario{{ user.id }}Label">Editar usuario</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form method="post" action="#">
-                        {% csrf_token %}
-                        <div class="form-group">
-                          <label for="nombre">Nombre:</label>
-                          <input type="text" class="form-control" id="nombre" name="nombre" value="{{ user.first_name }}">
-                        </div>
-                        <div class="form-group">
-                          <label for="apellido">Apellido:</label>
-                          <input type="text" class="form-control" id="apellido" name="apellido"
-                            value="{{ user.last_name }}">
-                        </div>
-                        <div class="form-group">
-                          <label for="email">Email:</label>
-                          <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
-                        </div>
-                        <div class="form-group">
-                          <label for="rol">Rol:</label>
-                          <select class="form-control" id="rol" name="rol">
-                            <option value="0">ADMINISTRADOR</option>
-                            <option value="1">SUPERVISOR</option>
-                            <option value="2">MEDICO</option>
-                            <option value="3">ASISTENTE</option>
-                          </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-    
-    
-    
-    
-              <!-- boton eliminar confirmarcion modal -->
-              <!-- <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#eliminarUsuario{{ user.id }}">
+              <!-- boton eliminar usuario -->
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarUsuario{{ user.id }}">
                 <i class="fa-solid fa-trash"></i>
-              </button> -->
-              <!-- Modal -->
-              <div class="modal fade" id="eliminarUsuario{{ user.id }}" tabindex="-1" role="dialog"
-                aria-labelledby="eliminarUsuario{{ user.id }}Label" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="eliminarUsuario{{ user.id }}Label">Confirmar Eliminación</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      ¿Está seguro que desea eliminar al usuario {{ user.first_name }} {{ user.last_name }}?
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                      <a href="#" class="btn btn-danger">Eliminar</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-    
-              <!-- desacrivar usuario -->
-              <a href="#" class="btn btn-secondary"><i class="fa-solid fa-ban"></i></a>
-            </td>
-    
-            <!-- Modal -->
-    
-    
-    
-    
+              </button>
           </tr>
         {% endif %}
+
       {% endfor %}
       
     </tbody>
   </table>
 </div>
 
-<!-- Modal -->
+<!-- Modal editar usuario -->
+{% for user in users %}
+<div class="modal fade" id="editarUsuario{{ user.id }}" tabindex="-1" aria-labelledby="editarUsuario{{ user.id }}" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="editarUsuario{{ user.id }}">Editar usuario</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form action="{% url 'roles:user_update' pk=user.id %}" method="post">
+                  {% csrf_token %}
+                  <div class="row mt-4">
+                      <div class="col col-xl-6">
+                        <label for="first_name">Nombres : </label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{user.first_name}}">
+                      </div>
+                      <div class="col col-xl-6">
+                        <label for="last_name">Apellidos : </label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{user.last_name}}">
+                      </div>
+                  </div>
+                  <div class="row mt-4">
+                      <div class="col col-xl-6">
+                        <label for="email">Email : </label>
+                        <input type="text" class="form-control" id="email" name="email" value="{{user.email}}">
+                      </div>
+                      <div class="col col-xl-6">
+                        <label for="role">Rol : </label>
+                        <select class="form-control" id="role" name="role">
+                          {% for role in roles %}
+                              <option value="{{ role.id }}" {% if role.id == user.role.id %}selected{% endif %}>{{ role.name }}</option>
+                          {% endfor %}
+                      </select>
+                      </div>
+                  </div>
+                  <div class="modal-footer mt-4">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+{% endfor %}
 
-
-
+<!-- modal eliminar usuario -->
+{% for user in users %}
+<div class="modal fade" id="eliminarUsuario{{ user.id }}" tabindex="-1" aria-labelledby="eliminarUsuario{{ user.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="eliminarUsuario{{ user.id }}">Eliminar usuario</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar a {{user.first_name}} {{user.last_name}}?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 
 
 

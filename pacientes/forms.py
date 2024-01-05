@@ -22,12 +22,18 @@ class PacienteForm(forms.ModelForm):
             'emergency_contact': 'Contacto de Emergencia',
             
         }
+
+        gender_choices = (
+            ('Masculino', 'Masculino'),
+            ('Femenino', 'Femenino'),
+        )
+
         widgets = {
             'large_name': forms.TextInput(attrs={'class': 'form-control'}),
             'identification': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'gender': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.NumberInput(attrs={'class': 'form-control', 'maxlength': '11', 'pattern': '[0-9]{11}', 'required': 'true'}),
+            'gender': forms.Select(choices=gender_choices, attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'emergency_contact': forms.TextInput(attrs={'class': 'form-control'}),
         }

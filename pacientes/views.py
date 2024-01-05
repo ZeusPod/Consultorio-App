@@ -22,9 +22,37 @@ def create_paciente(request):
 @login_required(login_url='roles:login')
 def pacientes(request):
     pacientes = Paciente.objects.all()
-    return render(request, 'pacientes/pacientes.html' , {'pacientes': pacientes})
+    form = PacienteForm()
+    return render(request, 'pacientes/pacientes.html' , {'pacientes': pacientes, 'form': form})
 
 #### UPDATE PACIENTE ####	
 @login_required(login_url='roles:login')
 def update_paciente(request, pk):
-    pass
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        identification = request.POST.get('identification')
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+        gender = request.POST.get('gender')
+        email = request.POST.get('email')
+
+        paciente = Paciente.objects.get(id=pk)
+        paciente.large_name = name
+        paciente.identification = identification
+        paciente.address = address
+        paciente.phone = phone
+        paciente.gender = gender
+        paciente.email = email
+
+        paciente.save()
+        messages.success(request, 'Paciente actualizado con exito')
+        return redirect('pacientes:list_pacientes')
+
+    return redirect('pacientes:list_pacientes')
+
+
+
+### test calendar ###
+@login_required(login_url='roles:login')
+def test_calendar(request):
+    return render(request, 'citas/citas_calendar.html')

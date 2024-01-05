@@ -65,6 +65,7 @@
                     <div class="py-2 collapse-inner rounded bg-white">
                         <a class="collapse-item" href="{% url 'roles:register' %}">Crear usuario</a>
                         <a class="collapse-item" href="{% url 'roles:user_list' %}">Listado de usuarios</a>
+                        <a class="collapse-item" href="{% url 'roles:roles_maintainer' %}">Roles</a>
                     </div>
                 </div>
              </li>
@@ -79,9 +80,6 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded bg-white">
                         <a href="{% url 'pacientes:list_pacientes' %}" class="collapse-item">Pacientes</a>
-                        <a class="collapse-item" href="{% url 'pacientes:create_paciente' %}">Crear paciente</a>
-                        <a class="collapse-item" href="#">Editar paciente</a>
-                        <a class="collapse-item" href="#">Eliminar paciente</a>
                     </div>
                 </div>    
             </li>
@@ -269,6 +267,10 @@
     <script src="{% static 'base/vendor/datatables/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 
+    <!-- fullcalendar js -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script src='fullcalendar/dist/index.global.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/locales/es.js"></script>
 
 
     {% block js_page %} {% endblock js_page %}
