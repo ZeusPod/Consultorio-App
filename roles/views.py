@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import User, RolesUsuario
+from citas.models import Cita
 import logging
 
 
@@ -12,7 +13,9 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 @login_required(login_url='roles:login')
 def index(request):
-    return render(request, 'base/index.html')
+    citas = Cita.objects.filter(status = False)
+    citas_count = len(citas)
+    return render(request, 'base/index.html', {'citas': citas, 'citas_count': citas_count})
 
 
 ### register ###

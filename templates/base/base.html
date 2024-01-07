@@ -22,9 +22,10 @@
     <!-- Custom styles for this template-->
     <link href="{% static 'base/css/sb-admin-2.min.css' %}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-   
-
+    <!-- cdn select2 css -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- bootstrap timepicker css  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
 </head>
 
 <body id="page-top">
@@ -84,9 +85,16 @@
                 </div>    
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTree" aria-expanded="true" aria-controls="collapseTree">
                     <i class="fa-regular fa-calendar-check"></i>
-                    <span>Citas</span></a>
+                    <span>Citas</span>
+                </a>
+
+                <div id="collapseTree" class="collapse" aria-labelledby="headingTree" data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded bg-white">
+                        <a href="{% url 'citas:create_date' %}" class="collapse-item">Crear cita</a>
+                    </div>
+                </div>    
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
@@ -254,6 +262,11 @@
         </div>
     </div>
 
+
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <!-- CDN de DataTables -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -268,9 +281,16 @@
     <script src="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 
     <!-- fullcalendar js -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-    <script src='fullcalendar/dist/index.global.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/locales/es.js"></script>
+    <!-- <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/locales/es.js"></script> -->
+    <script src="{% static 'base/vendor/fullcalendar-6.1.10/dist/index.global.min.js' %}"></script>
+    <script src="{% static 'base/js/calendar.js' %}"></script>
+    <!-- select2 js -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- moment js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- bootstrap timepicker js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
 
 
     {% block js_page %} {% endblock js_page %}

@@ -50,9 +50,3 @@ def update_paciente(request, pk):
 
     return redirect('pacientes:list_pacientes')
 
-
-
-### test calendar ###
-@login_required(login_url='roles:login')
-def test_calendar(request):
-    return render(request, 'citas/citas_calendar.html')

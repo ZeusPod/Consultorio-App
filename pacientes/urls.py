@@ -5,5 +5,4 @@ urlpatterns = [
     path('pacientes/', views.pacientes, name='list_pacientes'),
     path('create_paciente/', views.create_paciente, name='create_paciente'),
     path('update_paciente/<int:pk>/', views.update_paciente, name='update_paciente'),
-    path('test_calendar/', views.test_calendar, name='test_calendar'),
 ]
