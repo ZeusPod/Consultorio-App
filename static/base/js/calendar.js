@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const citas = JSON.parse(document.getElementById('citas').textContent);
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-    const eventos = citas.map(cita => ({
+    /* const eventos = citas.map(cita => ({
        
         title: cita.description,
         start: new Date(cita.dates_date),
@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
         medic: cita.medic,
         patient: cita.patient,
         status: cita.status,
-    }));
+    })); */
 
-    console.log(eventos);
+    const eventos = citas 
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         //zona horaria
@@ -26,7 +26,63 @@ document.addEventListener('DOMContentLoaded', function() {
             center: 'title',
             right: 'dayGridMonth, timeGridWeek, timeGridDay',
         },
-        events: eventos,
+        events: function(info, successCallback, failureCallback) {
+            let events = eventos.map(evento => ({
+                title: evento.description,
+                start: new Date(evento.dates_date),
+                timeStart: moment(evento.hour_date, 'HH:mm:ss').format('hh:mm A'),
+                id: evento.id,
+                medic: evento.medic,
+                patient: evento.patient,
+                status: evento.status,
+            }))
+            successCallback(events);
+        },
+
+        eventContent: function(info) {
+            return{
+                html:`
+                    <div style="overflow:hidden; font-size: 12px; position: relative; cursor: pointer">
+                    <strong>${info.event.title}</strong>
+                    <div>Fecha:${info.event._instance.range.start.toLocaleDateString(
+                        'es-ES',
+                        {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        }
+                    )}</div>
+                    <div>Hora:${info.event.extendedProps.timeStart}</div>
+                    </div>
+                    `
+            }
+        },
+
+        eventMouseEnter: function(mouseEnterInfo) {
+            let el = mouseEnterInfo.el;
+            el.classList.add("relative");
+
+            let newEl = document.createElement("div");
+            let newElTitle = mouseEnterInfo.event.title;
+            let newElHour = mouseEnterInfo.event.extendedProps.timeStart;
+            newEl.innerHTML = `
+                <div
+                    class="fc-hoverable-event"
+                    style="position: absolute; bottom: 100%; left: 0; width: 300px; height: auto; background-color: white; z-index: 50; border: 1px solid #e2e8f0; border-radius: 0.375rem; padding: 0.75rem; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer;"
+                >
+                    <strong>${newElTitle}</strong>
+                    <div>Hora:${newElHour}</div>
+                   
+
+                </div>
+            `
+            el.after(newEl)
+        
+        },
+
+        eventMouseLeave: function() {
+            document.querySelector(".fc-hoverable-event").remove()
+        },
 
 
         buttonText: {
@@ -50,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $("#citaModal").modal('show');
         // Muestra la fecha seleccionada en el cuerpo del modal
         
-
         $("#guardarCitaBtn").on('click', function() {
             var paciente = $("#pacienteSelect").val();
             var doctor = $("#doctorSelect").val();
