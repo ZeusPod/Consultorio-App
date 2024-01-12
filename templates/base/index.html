@@ -85,7 +85,9 @@
                             <td> Cita no atendida</td>
                         {% endif %}
                         <td>
-                            <a href="#" class="btn btn-success btn-circle" role="button"><i class="far fa-eye"></i></a>
+                            <a href="{% url 'historias:historia' pk=cita.patient.id %}" class="btn btn-success btn-circle" role="button"><i class="far fa-eye"></i></a>
+                            <!-- delete cita -->
+                            <a href="{% url 'citas:delete_cita' pk=cita.id %}" class="btn btn-danger btn-circle" role="button"><i class="far fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

@@ -1,8 +1,5 @@
 {% extends 'base/base.html' %}
 
-
-
-
 {% block template_name %}
 <div class="text-center w-100">
     <h2>Calendario de Citas</h2>
@@ -12,12 +9,8 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-          <div id='calendar'></div>
-        </div>
-    </div>
+<div class="container mx-auto my-auto">
+  <div id='calendar'></div>
 </div>
 
 
@@ -65,7 +58,7 @@
         </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrarModalBtn">Cerrar</button>
           <button type="button" id="guardarCitaBtn" class="btn btn-primary">Guardar cita</button>
         </div>
       </div>

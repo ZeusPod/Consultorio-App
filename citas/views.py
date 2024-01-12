@@ -7,6 +7,7 @@ from pacientes.models import Paciente
 from django.utils import timezone
 from datetime import datetime
 import pytz
+from django.contrib import messages
 # Create your views here.
 
 
@@ -54,3 +55,10 @@ def create_date(request):
     )
 
     return render(request, 'citas/citas_calendar.html', {'pacientes': pacientes, 'users': users, 'citas': list(citas)})
+
+
+
+def delete_cita(request, pk):
+    Cita.objects.filter(id=pk).delete()
+    messages.success(request, 'Cita eliminada con exito')
+    return render(request, 'base/index.html')

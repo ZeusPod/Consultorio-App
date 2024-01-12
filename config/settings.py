@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'pacientes',
     'citas',
     'historias',
+    'contactos',
     ### third party apps ###
     'crispy_forms',
 ]
@@ -149,6 +150,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
+#auth con email 
+AUTH_USER_MODEL = 'roles.User'
 
 
 AUTHENTICATION_BACKENDS = [

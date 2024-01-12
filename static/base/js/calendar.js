@@ -3,29 +3,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const citas = JSON.parse(document.getElementById('citas').textContent);
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-    /* const eventos = citas.map(cita => ({
-       
-        title: cita.description,
-        start: new Date(cita.dates_date),
-        timeStart: moment(cita.hour_date, 'HH:mm:ss').format('hh:mm A'),
-        id: cita.id,
-        medic: cita.medic,
-        patient: cita.patient,
-        status: cita.status,
-    })); */
-
     const eventos = citas 
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         //zona horaria
+        
         timeZone: 'America/Caracas',
         locale: 'es',
         selectable: true,
         headerToolbar: {
             left: 'prev,next',
             center: 'title',
-            right: 'dayGridMonth, timeGridWeek, timeGridDay',
+            right: 'dayGridMonth, timeGridWeek, listDay',
         },
+
+
         events: function(info, successCallback, failureCallback) {
             let events = eventos.map(evento => ({
                 title: evento.description,
@@ -44,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 html:`
                     <div style="overflow:hidden; font-size: 12px; position: relative; cursor: pointer">
                     <strong>${info.event.title}</strong>
-                    <div>Fecha:${info.event._instance.range.start.toLocaleDateString(
+                    <div>Fecha : ${info.event._instance.range.start.toLocaleDateString(
                         'es-ES',
                         {
                             month: "long",
@@ -68,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
             newEl.innerHTML = `
                 <div
                     class="fc-hoverable-event"
-                    style="position: absolute; bottom: 100%; left: 0; width: 300px; height: auto; background-color: white; z-index: 50; border: 1px solid #e2e8f0; border-radius: 0.375rem; padding: 0.75rem; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer;"
+                    style="position: absolute; bottom: 100%; left: 0; width: 300px; height: auto; background-color: #4A6FDC; color:white; 
+                    z-index: 50; border: 1px solid #e2e8f0; border-radius: 0.375rem; padding: 0.75rem; font-size: 14px; 
+                    font-family: 'Inter', sans-serif; cursor: pointer;"
                 >
                     <strong>${newElTitle}</strong>
                     <div>Hora:${newElHour}</div>
@@ -84,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector(".fc-hoverable-event").remove()
         },
 
-
+       
         buttonText: {
             month: 'Mes',
             week: 'Semana',
@@ -92,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             prev: '<',
             next: '>',
         },
-        slotMinTime: '08:00:00',
-        slotMaxTime: '18:00:00',
+        /* slotMinTime: '08:00:00',
+        slotMaxTime: '18:00:00', */
         dateClick: function(info) {
             // Utiliza una función anónima para pasar la fecha a abrirModal
             
@@ -105,7 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function abrirModal(selectedDate) {
         $("#citaModal").modal('show');
         // Muestra la fecha seleccionada en el cuerpo del modal
-        
+
+
         $("#guardarCitaBtn").on('click', function() {
             var paciente = $("#pacienteSelect").val();
             var doctor = $("#doctorSelect").val();
@@ -151,12 +146,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         // redirecionar a la vista de index
                         window.location.href = '/';
-                    }, 5000);
+                    }, 2000);
                 }
             })
             .catch(error => console.error('Error:', error));
         });
-    }
+    };
+
+    
+   
+
 
     $('#horaCita').timepicker({
         timeFormat: 'H:i',
@@ -168,5 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollbar: true
     });
 
+ 
+
     calendar.render();
 });
+
+

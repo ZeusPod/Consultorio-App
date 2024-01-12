@@ -13,16 +13,3 @@ class Paciente(models.Model):
     def __str__(self):
         return self.large_name
     
-
-class History(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
-    register_date = models.DateTimeField()
-    history = models.TextField()
-    diagnostic = models.TextField()
-    notes = models.TextField()
-    follow_up = models.TextField()
-    treatment = models.TextField()
-
-
-    def __str__(self):
-        return self.paciente.large_name
