@@ -1,0 +1,166 @@
+{% extends 'base/base.html' %}
+{%load crispy_forms_tags %}
+{% block template_name %}
+<div class="text-center w-100">
+    <h2>Lista de Contactos</h2>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-5">
+  <table class="table table-striped mt-5">
+      <div class="container text-center">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#contactAgregar">Agregar Contacto</button>
+      </div>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Telefono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        {% for contact in contactos %}
+          
+          {% if user.is_active %}
+            <tr>
+              <td>{{ contact.name }}</td>
+              <td>{{ contact.email }}</td>
+              <td>{{ contact.phone }}</td>
+              <td>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarContacto{{ contact.id }}">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <!-- boton eliminar usuario -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarContacto{{ contact.id }}">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+            </tr>
+          {% endif %}
+  
+        {% endfor %}
+        
+      </tbody>
+    </table>
+</div>
+
+<!-- modal agregar contacto -->
+<div class="modal fade" id="contactAgregar" tabindex="-1" aria-labelledby="contactAgregar" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="contactAgregar">Agrega un nuevo contacto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="{% url 'contactos:create_contact' %}" method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                  <label for="name" class="form-label">Nombre del contacto</label>
+                  <input type="text" class="form-control" id="name" name="name">
+              </div>
+              <div class="mb-3">
+                  <label for="email" class="form-label">Email del contacto</label>
+                  <input type="text" class="form-control" id="email" name="email">
+              </div>
+              <div class="mb-3">
+                  <label for="phone" class="form-label">Telefono del contacto</label>
+                  <input type="text" class="form-control" id="phone" name="phone">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Agregar</button>
+          </div>
+         </form>
+  </div>
+</div>
+</div>
+
+
+<!-- modal editar contacto -->
+{% for contact in contactos %}
+<div class="modal fade" id="editarContacto{{ contact.id }}" tabindex="-1" aria-labelledby="editarContactoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editarContactoLabel">Editar Contacto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="{% url 'contactos:edit_contact' contact.id %}" method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                  <label for="name" class="form-label">Nombre del contacto</label>
+                  <input type="text" class="form-control" id="name" name="name" value="{{ contact.name }}">
+              </div>
+              <div class="mb-3">
+                  <label for="email" class="form-label">Email del contacto</label>
+                  <input type="text" class="form-control" id="email" name="email" value="{{ contact.email }}">
+              </div>
+              <div class="mb-3">
+                  <label for="phone" class="form-label">Telefono del contacto</label>
+                  <input type="text" class="form-control" id="phone" name="phone" value="{{ contact.phone }}">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+          </div>
+         </form>
+  </div>
+</div>
+</div>
+{% endfor %}
+
+<!-- modal eliminar contacto -->
+{% for contact in contactos %}
+<div class="modal fade" id="eliminarContacto{{ contact.id }}" tabindex="-1" aria-labelledby="eliminarContactoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="eliminarContactoLabel">Eliminar Contacto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estas seguro de que deseas eliminar a {{contact.name}}?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <form action="{% url 'contactos:delete_contact' contact.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Eliminar Contacto</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+
+
+
+{% block js_page %}
+<script>
+    // datatable
+    $(document).ready(function () {
+        $('.table').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            responsive: true,
+            searching: true,
+        });
+    })
+</script>
+{% endblock %}

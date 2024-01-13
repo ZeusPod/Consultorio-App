@@ -62,3 +62,9 @@ def delete_cita(request, pk):
     Cita.objects.filter(id=pk).delete()
     messages.success(request, 'Cita eliminada con exito')
     return render(request, 'base/index.html')
+
+
+# historial de citas
+def historial_citas(request):
+    citas = Cita.objects.filter(status=True)
+    return render(request, 'citas/historial_citas.html' , {'citas': citas})
