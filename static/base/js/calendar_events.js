@@ -1,21 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
-    //capturamos las citas desde el contexto
+
     const citas = JSON.parse(document.getElementById('citas').textContent);
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
+    let selectedDate; 
     const eventos = citas 
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        //zona horaria
-        
+    var CalendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(CalendarEl, {
         timeZone: 'America/Caracas',
         locale: 'es',
+        initialView : 'dayGridMonth',
         selectable: true,
         headerToolbar: {
             left: 'prev,next',
             center: 'title',
             right: 'dayGridMonth, timeGridWeek, listDay',
         },
+        buttonText: {
+            month: 'Mes',
+            week: 'Semana',
+            day: 'Dia',
+            prev: '<',
+            next: '>',
+        },
+        
+
+        dateClick: function(info) {
+            selectedDate = info.dateStr;
+            abrirModal(selectedDate);
+            
+        }, 
 
         events: function(info, successCallback, failureCallback) {
             let events = eventos.map(evento => ({
@@ -76,30 +90,18 @@ document.addEventListener('DOMContentLoaded', function() {
         eventMouseLeave: function() {
             document.querySelector(".fc-hoverable-event").remove()
         },
-
-       
-        buttonText: {
-            month: 'Mes',
-            week: 'Semana',
-            day: 'Dia',
-            prev: '<',
-            next: '>',
-        },
-        /* slotMinTime: '08:00:00',
-        slotMaxTime: '18:00:00', */
-        dateClick: function(info) {            
-            let selectedDate = info.dateStr;
-            abrirModal(selectedDate);
-        },
-
-
         
     });
-    
-    
-    function abrirModal(selectedDate) {
+
+    calendar.render(); 
+
+    $('#citaModal').on('hidden.bs.modal', function() {
+        limpiarSeleccionesModal();
+    });
+
+    function abrirModal(params) {
         $("#citaModal").modal('show');
-        // Muestra la fecha seleccionada en el cuerpo del modal
+
         $("#guardarCitaBtn").on('click', function() {
             var paciente = $("#pacienteSelect").val();
             var doctor = $("#doctorSelect").val();
@@ -109,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Formatea la fecha y hora en un formato adecuado para Django
             var formattedDate = moment(selectedDate).format('YYYY-MM-DDTHH:mm:ss');
             
+            console.log(paciente, doctor, description, formattedDate, hora_cita);
             fetch('/citas/create_date/', {
                 method: 'POST',
                 headers: {
@@ -150,12 +153,14 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error('Error:', error));
         });
-
-       
     };
-    
-   
 
+    function limpiarSeleccionesModal() {
+        $("#pacienteSelect").val('');
+        $("#doctorSelect").val('');
+        $("#description").val('');
+        $("#horaCita").val('');
+    };
 
     $('#horaCita').timepicker({
         timeFormat: 'H:i',
@@ -167,9 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollbar: true
     });
 
- 
-
-    calendar.render();
-});
 
 
+})

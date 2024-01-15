@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Cita
 from roles.models import User
 from pacientes.models import Paciente
@@ -20,7 +20,7 @@ def create_date(request):
         medic_id = request.POST.get('doctor')
         description = request.POST.get('description')
         hour_date = request.POST.get('hora_cita')
-    
+        print(patient_id)
         # Convertir la cadena de fecha y hora en un objeto datetime
         format_date_utc = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S')
 
@@ -50,6 +50,9 @@ def create_date(request):
         
     pacientes = Paciente.objects.all()
     users = User.objects.all()
+
+    
+
     citas = Cita.objects.filter(status=False).values(
         'id', 'patient', 'dates_date', 'hour_date', 'medic', 'modification_date', 'description', 'status'
     )
@@ -61,7 +64,7 @@ def create_date(request):
 def delete_cita(request, pk):
     Cita.objects.filter(id=pk).delete()
     messages.success(request, 'Cita eliminada con exito')
-    return render(request, 'base/index.html')
+    return redirect('roles:index')
 
 
 # historial de citas
