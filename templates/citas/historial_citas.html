@@ -42,7 +42,13 @@
                     {% endif %}
                     <td>
                         <a href="{% url 'historias:historia' pk=cita.patient.id %}" class="btn btn-success btn-circle" role="button"><i class="far fa-eye"></i></a>
+                        {% if cita.status == False %}
+    
+                            <!-- habilitar boton eliminar -->
+                            <a href="{% url 'citas:delete_cita' pk=cita.id %}" class="btn btn-danger btn-circle" role="button"><i class="far fa-trash-alt"></i></a>
+                        {% endif %}
                     </td>
+                    
                 </tr>
             {% endfor %}
         </tbody>

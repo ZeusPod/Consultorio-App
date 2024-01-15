@@ -69,5 +69,5 @@ def delete_cita(request, pk):
 
 # historial de citas
 def historial_citas(request):
-    citas = Cita.objects.filter(status=True)
+    citas = Cita.objects.all()
     return render(request, 'citas/historial_citas.html' , {'citas': citas})
