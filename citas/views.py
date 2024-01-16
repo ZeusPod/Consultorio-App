@@ -20,9 +20,14 @@ def create_date(request):
         medic_id = request.POST.get('doctor')
         description = request.POST.get('description')
         hour_date = request.POST.get('hora_cita')
-        print(patient_id)
+       
         # Convertir la cadena de fecha y hora en un objeto datetime
         format_date_utc = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S')
+        date_only = format_date_utc.date()
+    
+        # concateno date_only y hour_date
+        format_date_utc = datetime.combine(date_only, datetime.strptime(hour_date, '%H:%M').time())
+     
 
         # Obtener la zona horaria 'America/Caracas'
         caracas_tz = pytz.timezone('America/Caracas')
