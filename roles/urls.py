@@ -11,5 +11,6 @@ urlpatterns = [
     path('user_update/<int:pk>/', views.user_update, name='user_update'),
     path('roles_maintainer/', views.roles_maintainer, name='roles_maintainer'),
     path('roles_create/', views.roles_create, name='roles_create'),
+    path('create_cita/' , views.create_cita, name='create_cita'),
     
 ]

@@ -1,9 +1,12 @@
+from datetime import datetime
 from django.shortcuts import get_object_or_404, render
+import pytz
 from roles.forms import CustomUserCreationForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import User, RolesUsuario
+from pacientes.models import Paciente
 from citas.models import Cita
 import logging
 
@@ -15,7 +18,40 @@ logger = logging.getLogger(__name__)
 def index(request):
     citas = Cita.objects.filter(status = False)
     citas_count = len(citas)
-    return render(request, 'base/index.html', {'citas': citas, 'citas_count': citas_count})
+    pacientes = Paciente.objects.all()
+    users = User.objects.all()
+
+    return render(request, 'base/index.html', {'citas': citas, 'citas_count': citas_count , 'pacientes': pacientes, 'users': users})
+
+
+# crear una cita desde el index 
+def create_cita(request):   
+    if request.method == 'POST':
+        patient_id = request.POST.get('paciente')
+        date_str = request.POST.get('dates_date')
+        medic_id = request.POST.get('doctor')
+        description = request.POST.get('description')
+        hour_date = request.POST.get('horaCita')
+        
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+
+        format_date_utc = datetime.combine(date_obj, datetime.strptime(hour_date, '%H:%M').time())
+        # Obtener la zona horaria 'America/Caracas'
+        caracas_tz = pytz.timezone('America/Caracas')
+
+        # Convertir la fecha y hora a la zona horaria local
+        format_date_local = caracas_tz.localize(format_date_utc)
+
+        paciente = Paciente.objects.get(id=patient_id)
+        medic = User.objects.get(id=medic_id)
+
+        # Almacenar la fecha y hora en la base de datos
+        cita = Cita.objects.create(patient=paciente, dates_date=format_date_local, hour_date=hour_date, medic=medic, description=description)
+        cita.save()
+        messages.success(request,'Cita agendada con exito')
+
+        return redirect('roles:index')
+    
 
 
 ### register ###

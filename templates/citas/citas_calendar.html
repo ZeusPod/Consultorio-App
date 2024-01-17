@@ -23,7 +23,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-        <form action="" method="post">
+        <form action="{% url 'roles:create_cita' %}" method="post">
             {% csrf_token %}
             <div class="row">
               <!-- paciente -->
@@ -49,17 +49,24 @@
                 <label for="doctor">Descripción : </label>
                 <textarea class="form-control" name="description" id="description" cols="10" rows="3"></textarea>
               </div>
+              <!-- date -->
+              <div class="col-12">
+                <label for="doctor">Fecha : </label>
+                <input type="date" class="form-control" name="dates_date" id="dates_date" required hidden>
+              </div>
+
+
               <!-- date time -->
               <div class="col-12">
                 <label for="doctor">hora : </label>
                 <input type="text" class="form-control" name="horaCita" id="horaCita" required>
               </div>
             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrarModalBtn">Cerrar</button>
+              <button type="submit" id="guardarCitaBtn" class="btn btn-primary">Guardar cita</button>
+            </div>
         </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrarModalBtn">Cerrar</button>
-          <button type="button" id="guardarCitaBtn" class="btn btn-primary">Guardar cita</button>
         </div>
       </div>
     </div>

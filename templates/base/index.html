@@ -38,7 +38,7 @@
     </div>
 </div>
 
-
+<button class="btn btn-success ml-3 mb-3" data-bs-toggle="modal" data-bs-target="#addCitaModal">Crear nueva cita</button>
 
 
 
@@ -46,12 +46,12 @@
 <div class="card shadow mb-4">
     <!-- Card Header - Dropdown -->
     <div
-        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-success">Citas progamadas para hoy</h6>
-        
-    </div>
-
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-success">Citas progamadas para hoy</h6>
     
+</div>
+
+    <!-- boton agregar cita  -->
     <!-- Card Body -->
     <div class="card-body">
          <table class="table table-striped  table-hover">
@@ -94,6 +94,63 @@
     </div>
 </div>
 
+
+<!-- modal para agendar una cita -->
+<div class="modal fade" id="addCitaModal" tabindex="-1" aria-labelledby="addCitaModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addCitaModal">Agendar Cita</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <form action="{% url 'roles:create_cita' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+              <!-- paciente -->
+              <div class="col-12">
+                <label for="paciente">Paciente: </label>
+                <select class="select-js-gavidia w-100" name="paciente" id="pacienteSelect" multiple required>
+                    {% for paciente in pacientes %}
+                        <option value="{{paciente.id}}">{{paciente.large_name}}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <!-- doctor -->
+              <div class="col-12">
+                <label for="doctor">Doctor: </label>
+                <select class="select-js-gavidia w-100" name="doctor" id="doctorSelect" multiple required>
+                    {% for user in users %}
+                        <option value="{{user.id}}">{{user.first_name}} {{user.last_name}}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <!-- description -->
+              <div class="col-12">
+                <label for="doctor">Descripción : </label>
+                <textarea class="form-control" name="description" id="description" cols="10" rows="3"></textarea>
+              </div>
+              <!-- date -->
+              <div class="col-12">
+                <label for="doctor">Fecha : </label>
+                <input type="date" class="form-control" name="dates_date" id="dates_date" required>
+              </div>
+              <!-- date time -->
+              <div class="col-12">
+                <label for="doctor">hora : </label>
+                <input type="text" class="form-control" name="horaCita" id="horaCita" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrarModalBtn">Cerrar</button>
+              <button type="submit" id="guardarCitaBtn" class="btn btn-primary">Guardar cita</button>
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 {% endblock content %}
 
 
@@ -125,6 +182,18 @@
             }
         });
     })
+
+
+
+    $('#horaCita').timepicker({
+        timeFormat: 'H:i',
+        interval: 60,
+        minTime: '8:00am',
+        maxTime: '6:00pm',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
 </script>
 
 {% endblock js_page %}

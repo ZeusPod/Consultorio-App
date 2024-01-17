@@ -99,58 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function abrirModal(selectedDate) {
         $("#citaModal").modal('show');
-        // Muestra la fecha seleccionada en el cuerpo del modal
-        $("#guardarCitaBtn").on('click', function() {
-            var paciente = $("#pacienteSelect").val();
-            var doctor = $("#doctorSelect").val();
-            var description = $("#description").val();
-            var hora_cita = $("#horaCita").val();
-            
-            // Formatea la fecha y hora en un formato adecuado para Django
-            var formattedDate = moment(selectedDate).format('YYYY-MM-DDTHH:mm:ss');
-            
-            fetch('/citas/create_date/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': csrfToken
-                },
-                body: new URLSearchParams({
-                    'paciente': paciente,
-                    'doctor': doctor,
-                    'description': description,
-                    'dates_date': formattedDate,
-                    'hora_cita': hora_cita
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    $("#citaModal").modal('hide');
-                    // Mensaje de éxito para SweetAlert
-                    Swal.fire({
-                        "title": "Cita Agendada",
-                        "text": data.message,
-                        "icon": "success",
-                    });
-                    calendar.addEventSource(citas);
-                    // Limpia los campos del formulario
-                    $("#pacienteSelect").val('').trigger('change');
-                    $("#doctorSelect").val('').trigger('change');
-                    $("#description").val('');
-                    $("#horaCita").val('');
-
-                    // esperamos 5 segundos antes de redireccionar
-                    setTimeout(() => {
-
-                        // redirecionar a la vista de index
-                        window.location.href = '/';
-                    }, 2000);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-
+        // asiganmos la fecha seleccionada al input de fecha
+        $("#dates_date").val(selectedDate);
        
     };
     
