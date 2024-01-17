@@ -173,14 +173,5 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
 # Ignorar archivos de migración de Django
-**/migrations/
-**/__pycache__/
-**/*.pyc
-**/*.pyo
-**/*.pyd
-**/*.sqlite3
-migrations/
-api_mobile/migrations/
-maintainer/migrations/
-patrullero/migrations/
-roles/migrations/
+
+
